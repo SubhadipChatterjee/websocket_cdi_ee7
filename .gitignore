@@ -1,5 +1,3 @@
 build.xml
 nbproject/
-src/java/logback.xml
 src/conf/
-web/index.html

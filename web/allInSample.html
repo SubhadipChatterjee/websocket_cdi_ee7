@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket - Say Hello</title>
+        <meta charset="UTF-8">
+        <style>
+            * { 
+                font-family: verdana;
+                font-size: small;
+            }
+
+            fieldset{
+                width: 30%;
+            }
+
+            div#sockMsg {           
+                width: 50%;
+            }
+
+            label{
+                color: blue;
+            }
+
+            input[type="button"]{
+                background: antiquewhite;
+            }
+
+            label#data {
+                color: darkturquoise;
+            }
+
+            label#time{
+                color: coral;
+            }
+        </style>
+
+        <script>
+            var websocketSession;
+            var connectBtn;
+            var closeBtn;
+            var inputText;
+
+            function actOnMessage(event) {
+                var socketMsg = document.getElementById("sockMsg");
+                socketMsg.innerHTML = socketMsg.innerHTML + "<label id='data'>" + event.data + "</label><br>";
+                if (inputText) {
+                    inputText.value = '';
+                }
+            }
+
+            function open() {
+                if (!websocketSession) {
+                    websocketSession = new WebSocket('ws://localhost:8080/wsent/chat');
+                    websocketSession.onmessage = actOnMessage;
+                    connectBtn.disabled = true;
+                    closeBtn.disabled = false;
+                }
+            }
+
+            function close() {
+                if (websocketSession) {
+                    websocketSession.close();
+                    connectBtn.disabled = false;
+                    closeBtn.disabled = true;
+                }
+            }
+
+            function sendMessage(message) {
+                if (message) {
+                    websocketSession.send(message);
+                }
+            }
+
+            function init() {
+                connectBtn = document.getElementById("openSocket");
+                closeBtn = document.getElementById("closeSocket");
+                inputText = document.getElementById("cliMsg");
+                var sendBtn = document.getElementById("postMessage");
+
+                connectBtn.disabled = false;
+                closeBtn.disabled = true;
+
+                connectBtn.onclick = open;
+                closeBtn.onclick = close;
+                sendBtn.onclick = function() {
+                    sendMessage(inputText.value);
+                };
+            }
+
+            window.onload = init;
+        </script>
+    </head>
+    <body>
+        <form>
+            <fieldset>
+                <legend>Step 1 - CONNECT</legend>
+                <input type="button" value="Connect" id="openSocket">
+            </fieldset>
+
+            <fieldset> 
+                <legend>Step 2 - POST</legend>
+                <label for="cliMsg">Enter Text:</label>
+                <input type="text" id="cliMsg" placeholder="Type your text!"/>
+                <input type="button" value="Post!" id="postMessage"/>
+            </fieldset>
+            <fieldset> 
+                <legend>Step 3 - READ</legend>
+                <label>Socket Sends:</label>
+                <p>
+                <div id="sockMsg"></div>
+            </fieldset>
+            <fieldset> 
+                <legend>Step 4 - DISCONNECT</legend>
+                <input type="button" value="Close" id="closeSocket">
+            </fieldset>
+        </form>
+    </body>
+</html>
