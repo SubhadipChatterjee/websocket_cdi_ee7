@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author 497248
+ * @author subhadip.chatterjee@tcs.com
  */
 @Stateless
 public class EventProducerBean {
