@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author 497248
+ * @author subhadip.chatterjee@tcs.com
  */
 @ServerEndpoint("/share")
 public class TweetItSocket implements Serializable {

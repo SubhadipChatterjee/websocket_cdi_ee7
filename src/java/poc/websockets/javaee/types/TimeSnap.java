@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  *
- * @author 497248
+ * @author subhadip.chatterjee@tcs.com
  */
 public class TimeSnap {
     private Date timestamp;
